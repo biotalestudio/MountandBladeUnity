@@ -2,24 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraPositionSetup : MonoBehaviour
+namespace MBUnity
 {
-
-    [SerializeField]
-    GameObject terrainObject;
-    
-    // Update is called once per frame
-    void FixedUpdate()
+    public class CameraPositionSetup : MonoBehaviour
     {
-        RaycastHit rayHit;
 
-        if (Physics.Raycast(transform.position, Vector3.down, out rayHit, 3f))
+        [SerializeField]
+        GameObject terrainObject;
+
+        // Update is called once per frame
+        void FixedUpdate()
         {
-            if (rayHit.collider.gameObject == terrainObject)
+            RaycastHit rayHit;
+
+            if (Physics.Raycast(transform.position, Vector3.down, out rayHit, 3f))
             {
-                float distance = Vector3.Distance(rayHit.point, transform.position);
-                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, transform.position.y + distance, transform.position.z), 0.3f);
+                if (rayHit.collider.gameObject == terrainObject)
+                {
+                    float distance = Vector3.Distance(rayHit.point, transform.position);
+                    transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, transform.position.y + distance, transform.position.z), 0.3f);
+                }
             }
         }
     }
+
 }

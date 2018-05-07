@@ -2,67 +2,71 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct FactionRelationship
+namespace MBUnity
 {
-    public Faction faction;
-    public int relationshipValue;
-    
-    public FactionRelationship(Faction f, int r)
+    [System.Serializable]
+    public struct FactionRelationship
     {
-        faction = f;
-        relationshipValue = r;
-    }
-}
+        public Faction faction;
+        public int relationshipValue;
 
-[CreateAssetMenu(fileName = "New Faction", menuName = "Game/Faction")]
-public class Faction : ScriptableObject
-{
-    public string Name;
-    public Character Leader;
-    public Color Color;
-    public List<FactionRelationship> RelationshipList;
-    public List<Location> LocationsOwned;
-    public List<Character> FactionTroops;
-    
-    private void Awake()
-    {
-    }
-    
-    private void OnEnable()
-    {
-        SortTroopList();
-    }
-    
-    //Simple Selection Sort algorithm
-    //Can be optimized greatly
-    //Actually we don't need this kind of sorting
-    //We can do this sorting manually in the editor
-    //But I am a lazy person so...
-    void SortTroopList()
-    {
-        for (int i = 0; i < FactionTroops.Count; i++)
+        public FactionRelationship(Faction f, int r)
         {
-            int minIndex = i;
+            faction = f;
+            relationshipValue = r;
+        }
+    }
 
-            Character tempChar;
+    [CreateAssetMenu(fileName = "New Faction", menuName = "Game/Faction")]
+    public class Faction : ScriptableObject
+    {
+        public string Name;
+        public Character Leader;
+        public Color Color;
+        public List<FactionRelationship> RelationshipList;
+        public List<Location> LocationsOwned;
+        public List<Character> FactionTroops;
 
-            for (int j = i + 1; j < FactionTroops.Count; j++)
+        private void Awake()
+        {
+        }
+
+        private void OnEnable()
+        {
+            SortTroopList();
+        }
+
+        //Simple Selection Sort algorithm
+        //Can be optimized greatly
+        //Actually we don't need this kind of sorting
+        //We can do this sorting manually in the editor
+        //But I am a lazy person so...
+        void SortTroopList()
+        {
+            for (int i = 0; i < FactionTroops.Count; i++)
             {
-                if (FactionTroops[minIndex].CharValue > FactionTroops[j].CharValue)
+                int minIndex = i;
+
+                Character tempChar;
+
+                for (int j = i + 1; j < FactionTroops.Count; j++)
                 {
-                    minIndex = j;
+                    if (FactionTroops[minIndex].CharValue > FactionTroops[j].CharValue)
+                    {
+                        minIndex = j;
+                    }
                 }
-            }
 
-            //Swapping
-            if (minIndex != i)
-            {
-                tempChar = FactionTroops[minIndex];
+                //Swapping
+                if (minIndex != i)
+                {
+                    tempChar = FactionTroops[minIndex];
 
-                FactionTroops[minIndex] = FactionTroops[i];
-                FactionTroops[i] = tempChar;
+                    FactionTroops[minIndex] = FactionTroops[i];
+                    FactionTroops[i] = tempChar;
+                }
             }
         }
     }
+
 }

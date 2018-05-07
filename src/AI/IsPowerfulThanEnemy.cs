@@ -5,38 +5,42 @@ using UnityEngine.AI;
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 
-public class IsPowerfulThanEnemy : Conditional
+namespace MBUnity
 {
-    public SharedGameObject enemy;
-
-    private Party m_party;
-    private PartyScript m_partyScript;
-
-    private Party m_enemyParty;
-    private PartyScript m_enemyScript;
-
-    public override void OnStart()
+    public class IsPowerfulThanEnemy : Conditional
     {
-        m_partyScript = GetComponent<PartyScript>();
-        m_party = m_partyScript.party;
+        public SharedGameObject enemy;
 
-        m_enemyScript = enemy.Value.GetComponent<PartyScript>();
-        m_enemyParty = m_enemyScript.party;
+        private Party m_party;
+        private PartyScript m_partyScript;
+
+        private Party m_enemyParty;
+        private PartyScript m_enemyScript;
+
+        public override void OnStart()
+        {
+            m_partyScript = GetComponent<PartyScript>();
+            m_party = m_partyScript.GetParty();
+
+            m_enemyScript = enemy.Value.GetComponent<PartyScript>();
+            m_enemyParty = m_enemyScript.GetParty();
+        }
+
+        bool IsPowerful()
+        {
+            if (m_party.PartyValue > m_enemyParty.PartyValue)
+                return true;
+            else
+                return false;
+        }
+
+        public override TaskStatus OnUpdate()
+        {
+            if (IsPowerful())
+                return TaskStatus.Success;
+            else
+                return TaskStatus.Failure;
+        }
     }
 
-    bool IsPowerful()
-    {
-        if (m_party.PartyValue > m_enemyParty.PartyValue)
-            return true;
-        else
-            return false;
-    }
-
-    public override TaskStatus OnUpdate()
-    {
-        if (IsPowerful())
-            return TaskStatus.Success;
-        else
-            return TaskStatus.Failure;
-    }
 }

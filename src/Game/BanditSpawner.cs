@@ -2,70 +2,74 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using BehaviorDesigner.Runtime;
 
-public class BanditSpawner : MonoBehaviour
+namespace MBUnity
 {
-    public GameObject partyPrefab;
-    public Character banditCharacter;
-
-    public float sphereRadius = 10f;
-
-    private PartyUIInteraction m_uiInteraction;
-    private PartyScript m_script;
-    private GameObject m_spawnedBandit;
-    private Party m_party;
-    private int banditCount;
-
-	void Awake ()
+    public class BanditSpawner : MonoBehaviour
     {
-        SpawnBandit();
-        SpawnBandit();
-        SpawnBandit();
-        SpawnBandit();
+        public GameObject partyPrefab;
+        public Character banditCharacter;
+        public int maxBandit;
+        public float sphereRadius = 10f;
+
+        private BehaviorTree m_patrolTree;
+        private GameObject m_spawnedBandit;
+        private int m_currentBanditCount;
+        
+
+        private void Update()
+        {
+            if (m_currentBanditCount < maxBandit)
+            {
+                SpawnBandit();
+            }
+        }
+
+        Vector3 RandomPositionOnNavMesh()
+        {
+            Vector3 randomDir = Random.insideUnitSphere * sphereRadius;
+
+            randomDir += transform.position;
+
+            NavMeshHit hit;
+            NavMesh.SamplePosition(randomDir, out hit, sphereRadius, 1);
+            Vector3 position = hit.position;
+
+            return position;
+        }
+
+        void SpawnBandit()
+        {
+            Party party = ScriptableObject.CreateInstance<Party>();
+            GameObject spawnedObject = Instantiate(partyPrefab, RandomPositionOnNavMesh(), transform.rotation);
+            spawnedObject.transform.parent = transform;
+            PartyScript partyScript = spawnedObject.GetComponent<PartyScript>();
+            PartyUIInteraction partyUI = spawnedObject.GetComponent<PartyUIInteraction>();
+            m_patrolTree = spawnedObject.GetComponent<BehaviorTree>();
+
+
+            party.IsBandit = true;
+            party.Leader = banditCharacter;
+            party.script = partyScript;
+            
+            partyScript.SetParty(party);
+            Debug.Log("Ready to enable");
+            partyScript.enabled = true;
+
+            partyUI.partyData = party;
+            partyUI.enabled = true;
+
+            if (party.Troops == null)
+                party.Troops = new List<Troop>();
+
+            int randomSize = Random.Range(5, 20);
+            party.Limit = 999;
+            partyScript.AddCharacterToParty(party.Leader, randomSize);
+            m_patrolTree.SetVariableValue("spawnPoint", transform.position);
+            
+            m_currentBanditCount++;
+        }
     }
 
-    private void Update()
-    {
-        
-    }
-
-    Vector3 RandomPositionOnNavMesh()
-    {
-        Vector3 randomDir = Random.insideUnitSphere * sphereRadius;
-
-        randomDir += transform.position;
-
-        NavMeshHit hit;
-        NavMesh.SamplePosition(randomDir, out hit, sphereRadius, 1);
-        Vector3 position = hit.position;
-
-        return position;
-    }
-    
-    void SpawnBandit()
-    {
-        m_party = ScriptableObject.CreateInstance<Party>();
-        
-        m_party.IsBandit = true;
-        m_party.Leader = banditCharacter;
-
-        m_spawnedBandit = Instantiate(partyPrefab, RandomPositionOnNavMesh(), transform.rotation);
-        
-        m_uiInteraction = m_spawnedBandit.GetComponent<PartyUIInteraction>();
-        m_party.script = m_spawnedBandit.GetComponent<PartyScript>();
-        m_script = m_party.script;
-        
-        m_script.party = m_party;
-        m_uiInteraction.partyData = m_party;
-
-        m_uiInteraction.enabled = true;
-        m_script.enabled = true;
-
-        if (m_party.Troops == null)
-            m_party.Troops = new List<Troop>();
-        
-        int randomSize = Random.Range(5, 20);
-        m_party.Limit = 999;
-        m_script.AddCharacterToParty(m_party.Leader, randomSize);
-    }
 }

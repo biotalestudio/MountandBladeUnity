@@ -4,53 +4,104 @@ using UnityEngine;
 using BehaviorDesigner.Runtime;
 using UnityEngine.AI;
 
-public class AIManager : MonoBehaviour
+namespace MBUnity
 {
-    public AIStates currentState;
-    public Vector3 currentTargetPos;
-    public Party party;
-
-    public Collider[] m_colliders;
-    public List<GameObject> m_parties;
-    public List<GameObject> m_enemies;
-
-    public float radius = 25f;
-    public GameObject closestEnemy;
-
-    private AIStates previousState;
-    private NavMeshAgent m_agent;
-    private BehaviorTree m_tree;
-    private Animator m_animator;
-    private PartyScript m_script;
-
-    public void Awake()
+    public class AIManager : MonoBehaviour
     {
-        m_agent = GetComponent<NavMeshAgent>();
-        m_tree = GetComponent<BehaviorTree>();
-        m_animator = GetComponent<Animator>();
-        m_script = GetComponent<PartyScript>();
-
-        party = m_script.party;
-    }
-
-    public void MoveAgent(Vector3 targetPos)
-    {
-        currentTargetPos = targetPos;
-
-        m_agent.SetDestination(currentTargetPos);
-        m_animator.SetBool("isWalking", true);
-    }
-
-    private void Update()
-    {
+        public float radius = 25f;
+        public GameObject strongestEnemy;
+        public Vector3 m_currentTargetPos;
         
-    }
+        private AIStates m_previousState;
+        private AIStates m_currentState;
 
-    public float GetDistanceWithTargetPos()
-    {
-        float distance = Vector3.Distance(transform.position, currentTargetPos);
+        private Party m_party;
+        private NavMeshAgent m_agent;
+        private BehaviorTree m_tree;
+        private Animator m_animator;
+        private PartyScript m_script;
 
-        return distance; 
-    }
-    
+        public void Awake()
+        {
+            m_agent = GetComponent<NavMeshAgent>();
+            m_tree = GetComponent<BehaviorTree>();
+            m_animator = GetComponent<Animator>();
+            m_script = GetComponent<PartyScript>();
+
+            m_party = m_script.GetParty();
+            strongestEnemy = null;
+        }
+
+        public AIStates GetCurrentState()
+        {
+            return m_currentState;
+        }
+
+        public void SetCurrentState(AIStates newState)
+        {
+            m_currentState = newState;
+        }
+
+        public Vector3 GetCurrentTargetPos()
+        {
+            return m_currentTargetPos;
+        }
+
+        public void SetCurrentTargetPos(Vector3 newPos)
+        {
+            m_currentTargetPos = newPos;
+        }
+
+        public float GetDistanceWithTargetPos()
+        {
+            return Vector3.Distance(transform.position, m_currentTargetPos);
+        }
+
+        public bool HasArrivedToTargetPos()
+        {
+            if (GetDistanceWithTargetPos() < 0.1f)
+            {
+                OnReachedTargetPos();
+                return true;
+            }
+            else
+                return false;
+        }
+
+        void OnStartMoving()
+        {
+            
+        }
+
+        void OnReachedTargetPos()
+        {
+            m_animator.SetBool("isWalking", false);
+        }
+
+        public void MoveAgent(Vector3 targetPos)
+        {
+            m_currentTargetPos = targetPos;
+
+            m_agent.SetDestination(m_currentTargetPos);
+            m_animator.SetBool("isWalking", true);
+        }
+
+        public void StopMoving()
+        {
+            m_agent.SetDestination(transform.position);
+            m_animator.SetBool("isWalking", false);
+        }
+
+        bool HasArrivedCurrentTargetPos()
+        {
+            if (m_agent.remainingDistance < 0.3f && !m_agent.pathPending)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    } 
 }

@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GoVillageCenterLogic : MonoBehaviour
+namespace MBUnity
 {
-    private LocationSceneUI m_locationSceneUI;
-    
-    void OnEnable()
+    public class GoVillageCenterLogic : MonoBehaviour
     {
-        m_locationSceneUI = GameObject.FindGameObjectWithTag("LocationSceneUI").GetComponent<LocationSceneUI>();
-    }
+        private LocationSceneUI m_locationSceneUI;
 
-    public void GoToVillage()
-    {
-        SceneManager.LoadScene(m_locationSceneUI.locationData.sceneName);
+        void OnEnable()
+        {
+            m_locationSceneUI = GameObject.FindGameObjectWithTag("LocationSceneUI").GetComponent<LocationSceneUI>();
+        }
+
+        public void GoToVillage()
+        {
+            SceneManager.LoadScene(m_locationSceneUI.locationData.sceneName);
+        }
+
     }
 
 }

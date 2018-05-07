@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LocationSceneUIImageLogic : MonoBehaviour
+namespace MBUnity
 {
-
-    public LocationSceneUI LocationScene;
-
-    private Image _image;
-
-    private void Awake()
+    public class LocationSceneUIImageLogic : MonoBehaviour
     {
-        _image = GetComponent<Image>();
-    }
 
-    private void OnEnable()
-    {
-        switch (LocationScene.locationData.Type)
+        public LocationSceneUI LocationScene;
+
+        private Image _image;
+
+        private void Awake()
         {
-            case Enums.LocationType.Village:
-                _image.sprite = LocationScene.villageImage01;
-                break;
-            case Enums.LocationType.City:
-                _image.sprite = LocationScene.cityImage01;
-                break;
+            _image = GetComponent<Image>();
         }
-    }
+
+        private void OnEnable()
+        {
+            switch (LocationScene.locationData.Type)
+            {
+                case Enums.LocationType.Village:
+                    _image.sprite = LocationScene.villageImage01;
+                    break;
+                case Enums.LocationType.City:
+                    _image.sprite = LocationScene.cityImage01;
+                    break;
+            }
+        }
+    } 
 }

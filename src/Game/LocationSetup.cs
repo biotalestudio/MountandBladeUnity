@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocationSetup : MonoBehaviour {
-
-    public Location LocationData;
-
-    private TextMesh locationText;
-    private GameObject obj;
-
-    private void Start()
+namespace MBUnity
+{
+    public class LocationSetup : MonoBehaviour
     {
-        locationText = GetComponentInChildren<TextMesh>();
+        public Location LocationData;
 
-        locationText.text = LocationData.Name;
-        locationText.color = LocationData.Ruler.FactionData.Color;
-    }
+        private TextMesh locationText;
+        private GameObject obj;
 
+        private void Start()
+        {
+            locationText = GetComponentInChildren<TextMesh>();
+
+            locationText.text = LocationData.Name;
+            locationText.color = LocationData.Ruler.FactionData.Color;
+        }
+
+    } 
 }

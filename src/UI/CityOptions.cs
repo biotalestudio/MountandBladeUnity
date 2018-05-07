@@ -2,30 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CityOptions : MonoBehaviour
+namespace MBUnity
 {
-    public GameObject[] buttons;
-
-    void OnEnable()
+    public class CityOptions : MonoBehaviour
     {
-        foreach (GameObject button in buttons)
+        public GameObject[] buttons;
+
+        void OnEnable()
         {
-            if (button.GetComponent<CityLocationButton>().CheckAvaib())
+            foreach (GameObject button in buttons)
             {
-                button.SetActive(true);
+                if (button.GetComponent<CityLocationButton>().CheckAvaib())
+                {
+                    button.SetActive(true);
+                }
+                else
+                {
+                    button.SetActive(false);
+                }
             }
-            else
+        }
+
+        void OnDisable()
+        {
+            foreach (GameObject button in buttons)
             {
                 button.SetActive(false);
             }
         }
     }
 
-    void OnDisable()
-    {
-        foreach (GameObject button in buttons)
-        {
-            button.SetActive(false);
-        }
-    }
 }

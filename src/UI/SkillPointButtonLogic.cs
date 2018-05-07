@@ -2,139 +2,139 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Enums;
+using MBUnity.Enums;
 
-public class SkillPointButtonLogic : MonoBehaviour
+namespace MBUnity
 {
-
-    
-    public Attributes baseAttribute;
-    public Skills whichSkill;
-
-    private Button m_button;
-    private Image m_image;
-    private Character m_charData;
-
-    // Use this for initialization
-    void Start()
+    public class SkillPointButtonLogic : MonoBehaviour
     {
-        m_charData = GameObject.FindGameObjectWithTag("StatManager").GetComponent<StatManager>().charData;
-        m_button = GetComponent<Button>();
-        m_image = GetComponent<Image>();
-    }
+        public Attributes baseAttribute;
+        public Skills whichSkill;
 
-    // Update is called once per frame
-    void Update()
-    {
-        CheckAvaibility();
-    }
+        private Button m_button;
+        private Image m_image;
+        private Character m_charData;
 
-    public void ApplyStats()
-    {
-        Debug.Log("Applied");
-        switch (whichSkill)
+        // Use this for initialization
+        void Start()
         {
-            case Skills.Ironflesh:
-                m_charData.Ironflesh++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.PowerStrike:
-                m_charData.PowerStrike++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.PowerThrow:
-                m_charData.PowerThrow++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.PowerDraw:
-                m_charData.PowerDraw++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.WeaponMaster:
-                m_charData.WeaponMaster++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Shield:
-                m_charData.Shield++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Athletics:
-                m_charData.Athletics++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Riding:
-                m_charData.Riding++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.HorseArchery:
-                m_charData.HorseArchery++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Looting:
-                m_charData.Looting++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Trainer:
-                m_charData.Trainer++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Tracking:
-                m_charData.Tracking++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Tactics:
-                m_charData.Tactics++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.PathFinding:
-                m_charData.PathFinding++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Spotting:
-                m_charData.Spotting++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.InventoryManagement:
-                m_charData.InventoryManagement++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.WoundTreatment:
-                m_charData.WoundTreatment++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Surgery:
-                m_charData.Surgery++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.FirstAid:
-                m_charData.FirstAid++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Engineer:
-                m_charData.Engineer++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Persuasion:
-                m_charData.Persuasion++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.PrisonerManagement:
-                m_charData.PrisonerManagement++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Leadership:
-                m_charData.Leadership++;
-                m_charData.SkillPoints--;
-                break;
-            case Skills.Trade:
-                m_charData.Trade++;
-                m_charData.SkillPoints--;
-                break;
+            m_charData = GameObject.FindGameObjectWithTag("StatManager").GetComponent<StatManager>().charData;
+            m_button = GetComponent<Button>();
+            m_image = GetComponent<Image>();
         }
-    }
 
-    void CheckAvaibility()
-    {
+        // Update is called once per frame
+        void Update()
+        {
+            CheckAvaibility();
+        }
+
+        public void ApplyStats()
+        {
+            Debug.Log("Applied");
+            switch (whichSkill)
+            {
+                case Skills.Ironflesh:
+                    m_charData.Ironflesh++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.PowerStrike:
+                    m_charData.PowerStrike++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.PowerThrow:
+                    m_charData.PowerThrow++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.PowerDraw:
+                    m_charData.PowerDraw++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.WeaponMaster:
+                    m_charData.WeaponMaster++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Shield:
+                    m_charData.Shield++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Athletics:
+                    m_charData.Athletics++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Riding:
+                    m_charData.Riding++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.HorseArchery:
+                    m_charData.HorseArchery++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Looting:
+                    m_charData.Looting++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Trainer:
+                    m_charData.Trainer++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Tracking:
+                    m_charData.Tracking++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Tactics:
+                    m_charData.Tactics++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.PathFinding:
+                    m_charData.PathFinding++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Spotting:
+                    m_charData.Spotting++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.InventoryManagement:
+                    m_charData.InventoryManagement++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.WoundTreatment:
+                    m_charData.WoundTreatment++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Surgery:
+                    m_charData.Surgery++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.FirstAid:
+                    m_charData.FirstAid++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Engineer:
+                    m_charData.Engineer++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Persuasion:
+                    m_charData.Persuasion++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.PrisonerManagement:
+                    m_charData.PrisonerManagement++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Leadership:
+                    m_charData.Leadership++;
+                    m_charData.SkillPoints--;
+                    break;
+                case Skills.Trade:
+                    m_charData.Trade++;
+                    m_charData.SkillPoints--;
+                    break;
+            }
+        }
+
+        void CheckAvaibility()
+        {
             switch (baseAttribute)
             {
                 case Attributes.Strength:
@@ -455,5 +455,6 @@ public class SkillPointButtonLogic : MonoBehaviour
                     break;
             }
         }
-}
+    }
 
+}

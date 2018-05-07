@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum AIStates
+﻿namespace MBUnity
 {
-    RUNNING,
-    CHASING,
-    PATROLLING
+    public enum AIStates
+    {
+        RUNNING,
+        CHASING,
+        PATROLLING
+    } 
 }

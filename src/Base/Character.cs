@@ -2,141 +2,144 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-[CreateAssetMenu(fileName = "New Character", menuName = "Game/Character")]
-public class Character : ScriptableObject {
-
-    [Header("Primary")]
-    public string Name;
-    public int Level;
-    public int Health;
-    public int Experience;
-    public int NextLevelExperience;
-    public int Age;
-    public int Renown;
-    public int Honor;
-    public Sex CharacterSex;
-    public int CharValue;
-
-    [Header("Game")]
-    public bool IsLord;
-    public bool IsCompanion;
-    public List<Location> LocationsOwned;
-    
-    public bool IsEqual(Character c1)
+namespace MBUnity
+{
+    [CreateAssetMenu(fileName = "New Character", menuName = "Game/Character")]
+    public class Character : ScriptableObject
     {
-        return this.Equals(c1);
-    }
 
-    public enum Sex
-    {
-        MALE,
-        FEMALE
-    }
+        [Header("Primary")]
+        public string Name;
+        public int Level;
+        public int Health;
+        public int Experience;
+        public int NextLevelExperience;
+        public int Age;
+        public int Renown;
+        public int Honor;
+        public Sex CharacterSex;
+        public int CharValue;
 
-    [Header("Data")]
-    public Faction FactionData;
-    public Party PartyData;
-   
-    [Header("Attributes")]
-    public int Strength;
-    public int Agility;
-    public int Intelligence;
-    public int Charisma;
+        [Header("Game")]
+        public bool IsLord;
+        public bool IsCompanion;
+        public List<Location> LocationsOwned;
 
-    [Header("Skills")]
-    public int Ironflesh;
-    public int PowerStrike;
-    public int PowerThrow;
-    public int PowerDraw;
-    public int WeaponMaster;
-    public int Shield;
-    public int Athletics;
-    public int Riding;
-    public int HorseArchery;
-    public int Looting;
-    public int Trainer;
-    public int Tracking;
-    public int Tactics;
-    public int PathFinding;
-    public int Spotting;
-    public int InventoryManagement;
-    public int WoundTreatment;
-    public int Surgery;
-    public int FirstAid;
-    public int Engineer;
-    public int Persuasion;
-    public int PrisonerManagement;
-    public int Leadership;
-    public int Trade;
+        public bool IsEqual(Character c1)
+        {
+            return this.Equals(c1);
+        }
 
-    [Header("Proficiencies")]
-    public int OneHandedWeapon;
-    public int TwoHandedWeapon;
-    public int Polearms;
-    public int Archery;
-    public int Crossbow;
-    public int Throwing;
+        public enum Sex
+        {
+            MALE,
+            FEMALE
+        }
 
-    [Header("Points")]
-    public int AttributePoints;
-    public int SkillPoints;
-    public int WeaponPoints;
+        [Header("Data")]
+        public Faction FactionData;
+        public Party PartyData;
 
-    [Header("Upgrades")]
-    public Character upgrade01;
-    public Character upgrade02;
+        [Header("Attributes")]
+        public int Strength;
+        public int Agility;
+        public int Intelligence;
+        public int Charisma;
 
-    //Use functions in this script only if it is going to initialize a value in scriptable object
-    public void OnEnable()
-    {
-        Init();
-    }
+        [Header("Skills")]
+        public int Ironflesh;
+        public int PowerStrike;
+        public int PowerThrow;
+        public int PowerDraw;
+        public int WeaponMaster;
+        public int Shield;
+        public int Athletics;
+        public int Riding;
+        public int HorseArchery;
+        public int Looting;
+        public int Trainer;
+        public int Tracking;
+        public int Tactics;
+        public int PathFinding;
+        public int Spotting;
+        public int InventoryManagement;
+        public int WoundTreatment;
+        public int Surgery;
+        public int FirstAid;
+        public int Engineer;
+        public int Persuasion;
+        public int PrisonerManagement;
+        public int Leadership;
+        public int Trade;
 
-    void Init()
-    {
-        CalculateCharacterValue();
-        CalculateNextLevelExperience();
-    }
+        [Header("Proficiencies")]
+        public int OneHandedWeapon;
+        public int TwoHandedWeapon;
+        public int Polearms;
+        public int Archery;
+        public int Crossbow;
+        public int Throwing;
 
-    public void CalculateNextLevelExperience()
-    {
-        Experience = (600 * (Level) + (80 * (Level)));
+        [Header("Points")]
+        public int AttributePoints;
+        public int SkillPoints;
+        public int WeaponPoints;
 
-        NextLevelExperience = (600 * (Level + 1) + (80 * (Level + 1)));
-    }
+        [Header("Upgrades")]
+        public Character upgrade01;
+        public Character upgrade02;
 
-    //We use Character value for pretty much everything in the game
-    //From sorting troops in UI, to AI algorithms
-    //It is an integer reperansation of how powerful a character is
-    public void CalculateCharacterValue()
-    {
-        CharValue = 1;
+        //Use functions in this script only if it is going to initialize a value in scriptable object
+        public void OnEnable()
+        {
+            Init();
+        }
 
-        CharValue += (Level * 6);
-        CharValue += Health;
-        CharValue += Renown;
+        void Init()
+        {
+            CalculateCharacterValue();
+            CalculateNextLevelExperience();
+        }
 
-        CharValue += (Strength * 5);
-        CharValue += (Agility * 5);
-        CharValue += (Charisma * 5);
-        CharValue += (Intelligence * 5);
+        public void CalculateNextLevelExperience()
+        {
+            Experience = (600 * (Level) + (80 * (Level)));
 
-        CharValue += (Ironflesh * 2);
-        CharValue += (PowerStrike * 2);
-        CharValue += (PowerThrow * 2);
-        CharValue += (PowerDraw * 2);
-        CharValue += (WeaponMaster * 2);
-        CharValue += (Shield * 2);
-        CharValue += (Riding * 2);
-        CharValue += (HorseArchery * 2);
+            NextLevelExperience = (600 * (Level + 1) + (80 * (Level + 1)));
+        }
 
-        CharValue += OneHandedWeapon;
-        CharValue += TwoHandedWeapon;
-        CharValue += Polearms;
-        CharValue += Archery;
-        CharValue += Crossbow;
-        CharValue += Throwing;
-    }
+        //We use Character value for pretty much everything in the game
+        //From sorting troops in UI, to AI algorithms
+        //It is an integer reperansation of how powerful a character is
+        public void CalculateCharacterValue()
+        {
+            CharValue = 1;
 
+            CharValue += (Level * 6);
+            CharValue += Health;
+            CharValue += Renown;
+
+            CharValue += (Strength * 5);
+            CharValue += (Agility * 5);
+            CharValue += (Charisma * 5);
+            CharValue += (Intelligence * 5);
+
+            CharValue += (Ironflesh * 2);
+            CharValue += (PowerStrike * 2);
+            CharValue += (PowerThrow * 2);
+            CharValue += (PowerDraw * 2);
+            CharValue += (WeaponMaster * 2);
+            CharValue += (Shield * 2);
+            CharValue += (Riding * 2);
+            CharValue += (HorseArchery * 2);
+
+            CharValue += OneHandedWeapon;
+            CharValue += TwoHandedWeapon;
+            CharValue += Polearms;
+            CharValue += Archery;
+            CharValue += Crossbow;
+            CharValue += Throwing;
+        }
+
+    } 
 }

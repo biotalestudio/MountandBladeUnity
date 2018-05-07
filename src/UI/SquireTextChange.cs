@@ -3,26 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SquireTextChange : MonoBehaviour {
+namespace MBUnity
+{
+    public class SquireTextChange : MonoBehaviour
+    {
 
-    public Character player;
+        public Character player;
 
-    Text m_text;
+        Text m_text;
 
-	// Use this for initialization
-	void Start () {
+        // Use this for initialization
+        void Start()
+        {
 
-        m_text = GetComponent<Text>();
+            m_text = GetComponent<Text>();
 
-        if (player.CharacterSex == Character.Sex.MALE)
-            m_text.text = "A squire";
-        else
-            m_text.text = "A lady in waiting";
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+            if (player.CharacterSex == Character.Sex.MALE)
+                m_text.text = "A squire";
+            else
+                m_text.text = "A lady in waiting";
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+    } 
 }

@@ -2,31 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VillageOptions : MonoBehaviour
+namespace MBUnity
 {
-    public GameObject[] buttons;
-
-    private void OnEnable()
+    public class VillageOptions : MonoBehaviour
     {
+        public GameObject[] buttons;
 
-        foreach (GameObject button in buttons)
+        private void OnEnable()
         {
-            if (button.GetComponent<VillageLocationButton>().CheckForAvaib())
+
+            foreach (GameObject button in buttons)
             {
-                button.SetActive(true);
+                if (button.GetComponent<VillageLocationButton>().CheckForAvaib())
+                {
+                    button.SetActive(true);
+                }
+                else
+                {
+                    button.SetActive(false);
+                }
             }
-            else
+        }
+
+        private void OnDisable()
+        {
+            foreach (GameObject button in buttons)
             {
                 button.SetActive(false);
             }
         }
-    }
-
-    private void OnDisable()
-    {
-        foreach (GameObject button in buttons)
-        {
-            button.SetActive(false);
-        }
-    }
+    } 
 }

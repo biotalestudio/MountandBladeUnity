@@ -5,44 +5,41 @@ using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 using UnityEngine.AI;
 
-public class MoveTowardsPosition : Action
+namespace MBUnity
 {
-    public SharedVector3 targetPosition;
-
-    private NavMeshAgent m_agent;
-    private Animator m_animator;
-    private AIManager m_aiManager;
-    
-    public override void OnStart()
+    public class MoveTowardsPosition : Action
     {
-        m_agent = GetComponent<NavMeshAgent>();
-        m_animator = GetComponent<Animator>();
-        m_aiManager = GetComponent<AIManager>();
+        public SharedVector3 targetPosition;
+        
+        private NavMeshAgent m_agent;
+        private Animator m_animator;
+        private AIManager m_aiManager;
 
-        m_aiManager.MoveAgent(targetPosition.Value);
-    }
-
-    bool HasArrived()
-    {
-        if (!m_agent.pathPending && m_agent.remainingDistance < 0.5f)
+        public override void OnStart()
         {
-            m_animator.SetBool("isWalking", false);
-            return true;
-        }
-        else
-        {
-            m_animator.SetBool("isWalking", true);
-            return false;
-        }
+            m_agent = GetComponent<NavMeshAgent>();
+            m_animator = GetComponent<Animator>();
+            m_aiManager = GetComponent<AIManager>();
             
-    }
-    
-    public override TaskStatus OnUpdate()
-    {
-        if (HasArrived())
-            return TaskStatus.Success;
-        else
-            return TaskStatus.Running;
+            m_aiManager.MoveAgent(targetPosition.Value);
+        }
+        
+        public override TaskStatus OnUpdate()
+        {
+            if (m_aiManager.strongestEnemy != null)
+            {
+                Debug.Log("There is an enemy nearby");
+                m_aiManager.StopMoving();
+                return TaskStatus.Failure;
+            }
+            else if (m_aiManager.HasArrivedToTargetPos())
+            {
+                return TaskStatus.Success;
+            }
+            else
+                return TaskStatus.Running;
+        }
+
     }
 
 }

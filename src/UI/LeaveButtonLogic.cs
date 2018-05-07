@@ -2,19 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaveButtonLogic : MonoBehaviour
+namespace MBUnity
 {
-
-    public GameObject locationSceneUI;
-
-	// Use this for initialization
-	public void DisableLocationSceneUI()
+    public class LeaveButtonLogic : MonoBehaviour
     {
-        locationSceneUI.SetActive(false);
-        GameManager.Instance.SetState(GameManager.GameState.SIMULATING);
-    }
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+        public GameObject locationSceneUI;
+
+        // Use this for initialization
+        public void DisableLocationSceneUI()
+        {
+            locationSceneUI.SetActive(false);
+            GameManager.Instance.SetState(GameManager.GameState.SIMULATING);
+        }
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+    } 
 }

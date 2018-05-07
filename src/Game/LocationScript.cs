@@ -2,150 +2,150 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocationScript : MonoBehaviour
+namespace MBUnity
 {
-
-    public static int counter = 0;
-    
-    public Location locationData;
-
-    private Faction m_faction;
-    private Character m_ruler;
-	
-
-	void Start ()
+    public class LocationScript : MonoBehaviour
     {
-        m_faction = locationData.Ruler.FactionData;
-        m_ruler = locationData.Ruler;
-        locationData.position = transform.position;
-        locationData.GarrisonSize = 0;
-        locationData.script = this;
+        public static int counter = 0;
 
-        if (locationData.Garrison == null)
-            locationData.Garrison = new List<Troop>();
-        else
-            locationData.Garrison.Clear();
+        public Location locationData;
 
-        if (locationData.Parties == null)
-            locationData.Garrison = new List<Troop>();
-        else
-            locationData.Garrison.Clear();
-
-        if (m_ruler.LocationsOwned == null)
-            m_ruler.LocationsOwned = new List<Location>();
-        else
-            m_ruler.LocationsOwned.Clear();
-
+        private Faction m_faction;
+        private Character m_ruler;
         
-        m_ruler.LocationsOwned.Add(locationData);
-        AddSoldiersToGarrison();
-	}
-
-    public void AddPartyTroopsToGarrison(Party party)
-    {
-        
-        for (int i = 0; i < party.Troops.Count; i++)
+        void Start()
         {
-            bool exist = false;
+            m_faction = locationData.Ruler.FactionData;
+            m_ruler = locationData.Ruler;
+            locationData.position = transform.position;
+            locationData.GarrisonSize = 0;
+            locationData.script = this;
 
-            for (int j = 0; j < locationData.Garrison.Count; j++)
+            if (locationData.Garrison == null)
+                locationData.Garrison = new List<Troop>();
+            else
+                locationData.Garrison.Clear();
+
+            if (locationData.Parties == null)
+                locationData.Garrison = new List<Troop>();
+            else
+                locationData.Garrison.Clear();
+
+            if (m_ruler.LocationsOwned == null)
+                m_ruler.LocationsOwned = new List<Location>();
+            else
+                m_ruler.LocationsOwned.Clear();
+
+
+            m_ruler.LocationsOwned.Add(locationData);
+            AddSoldiersToGarrison();
+        }
+
+        public void AddPartyTroopsToGarrison(Party party)
+        {
+
+            for (int i = 0; i < party.Troops.Count; i++)
             {
-                if (locationData.Garrison[j] == party.Troops[i])
-                {
-                    int newSize;
-                    newSize = locationData.Garrison[j].size + party.Troops[i].size;
+                bool exist = false;
 
-                    locationData.Garrison[j] = new Troop(party.Troops[i].character, newSize);
-                    exist = true;
+                for (int j = 0; j < locationData.Garrison.Count; j++)
+                {
+                    if (locationData.Garrison[j] == party.Troops[i])
+                    {
+                        int newSize;
+                        newSize = locationData.Garrison[j].size + party.Troops[i].size;
+
+                        locationData.Garrison[j] = new Troop(party.Troops[i].character, newSize);
+                        exist = true;
+                    }
+                }
+
+                if (!exist)
+                {
+                    locationData.Garrison.Add(party.Troops[i]);
                 }
             }
 
-            if (!exist)
+            locationData.Parties.Add(party);
+        }
+        
+        public void RemovePartyTroopsFromGarrison(Party party)
+        {
+            for (int i = 0; i < party.Troops.Count; i++)
             {
-                locationData.Garrison.Add(party.Troops[i]);
+                for (int j = 0; j < locationData.Garrison.Count; j++)
+                {
+                    if (locationData.Garrison[j] == party.Troops[i])
+                    {
+                        int newSize = locationData.Garrison[j].size - party.Troops[i].size;
+                        if (newSize <= 0)
+                        {
+                            locationData.Garrison.Remove(locationData.Garrison[j]);
+                        }
+                        else
+                        {
+                            locationData.Garrison[j] = new Troop(party.Troops[i].character, newSize);
+                        }
+
+                    }
+                }
+            }
+
+            locationData.Parties.Remove(party);
+        }
+
+        public void AddSoldiersToGarrison()
+        {
+            switch (locationData.Type)
+            {
+                case Enums.LocationType.City:
+                    for (int i = 0; i < m_faction.FactionTroops.Count; i++)
+                    {
+                        int capitalBuff = 1;
+
+                        if (locationData.IsCapital)
+                            capitalBuff = 2;
+
+                        int troopSize = Random.Range((m_ruler.PartyData.Limit) / (4 + (i * 2)), (locationData.Ruler.PartyData.Limit * capitalBuff) / (3 + (i * 2)));
+
+                        if (i > 5)
+                        {
+                            AddCharacterToGarrison(m_faction.FactionTroops[i], troopSize * 2);
+                            continue;
+                        }
+                        AddCharacterToGarrison(m_faction.FactionTroops[i], troopSize);
+                    }
+                    break;
+                case Enums.LocationType.Castle:
+                    break;
             }
         }
 
-        locationData.Parties.Add(party);
-    }
-
-
-    public void RemovePartyTroopsFromGarrison(Party party)
-    {
-        for (int i = 0; i < party.Troops.Count; i++)
+        public void AddCharacterToGarrison(Character character, int size)
         {
-            for (int j = 0; j < locationData.Garrison.Count; j++)
+            if (locationData.Garrison.Count != 0)
             {
-                if (locationData.Garrison[j] == party.Troops[i])
+                for (int i = 0; i < locationData.Garrison.Count; i++)
                 {
-                    int newSize = locationData.Garrison[j].size - party.Troops[i].size;
-                    if (newSize <= 0)
+                    if (locationData.Garrison[i].character.IsEqual(character))
                     {
-                        locationData.Garrison.Remove(locationData.Garrison[j]);
+                        int troopSize = locationData.Garrison[i].size;
+                        locationData.Garrison[i] = new Troop(character, troopSize + size);
+                        locationData.GarrisonSize += (locationData.Garrison[i].size);
                     }
                     else
                     {
-                        locationData.Garrison[j] = new Troop(party.Troops[i].character, newSize);
+                        locationData.Garrison.Add(new Troop(character, size));
+                        locationData.GarrisonSize += size;
+                        return;
                     }
-                    
                 }
             }
-        }
-
-        locationData.Parties.Remove(party);
-    }
-
-    public void AddSoldiersToGarrison()
-    {
-        switch (locationData.Type)
-        {
-            case Enums.LocationType.City:
-                for (int i = 0; i < m_faction.FactionTroops.Count; i++)
-                {
-                    int capitalBuff = 1;
-
-                    if (locationData.IsCapital)
-                        capitalBuff = 2;
-                    
-                    int troopSize = Random.Range((m_ruler.PartyData.Limit) / (4 + (i * 2)), (locationData.Ruler.PartyData.Limit * capitalBuff) / (3 + (i * 2)));
-
-                    if (i > 5)
-                    {
-                        AddCharacterToGarrison(m_faction.FactionTroops[i], troopSize * 2);
-                        continue;
-                    }
-                    AddCharacterToGarrison(m_faction.FactionTroops[i], troopSize);
-                }
-                break;
-            case Enums.LocationType.Castle:
-                break;
-        }
-    }
-	
-    public void AddCharacterToGarrison(Character character, int size)
-    {
-        if (locationData.Garrison.Count != 0)
-        {
-            for (int i = 0; i < locationData.Garrison.Count; i++)
+            else
             {
-                if (locationData.Garrison[i].character.IsEqual(character))
-                {
-                    int troopSize = locationData.Garrison[i].size;
-                    locationData.Garrison[i] = new Troop(character, troopSize + size);
-                    locationData.GarrisonSize += (locationData.Garrison[i].size);
-                }
-                else
-                {
-                    locationData.Garrison.Add(new Troop(character, size));
-                    locationData.GarrisonSize += size;
-                    return;
-                }
-            } 
+                locationData.Garrison.Add(new Troop(character, size));
+                locationData.GarrisonSize += size;
+            }
         }
-        else
-        {
-            locationData.Garrison.Add(new Troop(character, size));
-            locationData.GarrisonSize += size;
-        }
-    }
+    } 
 }
