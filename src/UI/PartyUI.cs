@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MBUnity.Enums;
 
 namespace MBUnity
 {
@@ -100,27 +101,27 @@ namespace MBUnity
                 m_currentColor = partyData.Leader.FactionData.Color;
                 return "(" + partyData.Leader.FactionData.Name + ")";
             }
-            else if (!m_HasWrittenStatus && partyData.followingParty != null)
+            else if (!m_HasWrittenStatus && partyData.FollowingParty != null)
             {
                 m_HasWrittenStatus = true;
                 m_currentColor = Color.white;
-                string text = "Travelling to " + partyData.followingParty.Leader.Name + "'s Party";
+                string text = "Travelling to " + partyData.FollowingParty.Leader.Name + "'s Party";
                 return text;
             }
-            else if (!m_HasWrittenStatus && partyData.followingLocation != null)
+            else if (!m_HasWrittenStatus && partyData.FollowingLocation != null)
             {
                 m_HasWrittenStatus = true;
                 m_currentColor = Color.white;
-                string text = "Travelling to " + partyData.followingLocation.Name;
+                string text = "Travelling to " + partyData.FollowingLocation.Name;
                 return text;
             }
             else if (!m_HasWrittenStatus)
             {
                 m_HasWrittenStatus = true;
                 m_currentColor = Color.white;
-                return partyData.Status.ToString();
+                return partyData.CurrentStatus.ToString();
             }
-            else if (!m_HasWrittenSpeed && partyData.Status != Party.CurrentStatus.HOLDING)
+            else if (!m_HasWrittenSpeed && partyData.CurrentStatus != PartyStatus.Holding)
             {
                 m_HasWrittenSpeed = true;
                 m_currentColor = Color.white;

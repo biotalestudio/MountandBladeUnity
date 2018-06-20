@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MBUnity.Enums;
 
 namespace MBUnity
 {
@@ -55,18 +56,11 @@ namespace MBUnity
 
         public List<Troop> Troops;
 
-        public Party followingParty;
-        public Location followingLocation;
+        public Party FollowingParty;
+        public Location FollowingLocation;
 
-        public CurrentStatus Status;
+        public PartyStatus CurrentStatus;
 
 
-        public enum CurrentStatus
-        {
-            HOLDING,
-            TRAVELLING,
-            PATROLLING
-        }
-        //public Faction Faction;
     } 
 }

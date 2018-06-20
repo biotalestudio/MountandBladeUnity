@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MBUnity.Enums;
 
 namespace MBUnity
 {
@@ -19,6 +20,17 @@ namespace MBUnity
         
         private Character m_leader;
         private Location m_currentLocation;
+        private Collider m_collider;
+        
+        public void SetFollowingParty(Party partyToFollow)
+        {
+            m_party.FollowingParty = partyToFollow; 
+        }
+
+        public Party GetFollowingParty()
+        {
+            return m_party.FollowingParty;
+        }
         
         public Party GetParty()
         {
@@ -33,6 +45,26 @@ namespace MBUnity
         public Faction GetPartyFaction()
         {
             return m_party.Leader.FactionData;
+        }
+        
+        public bool GetIsPlayer()
+        {
+            return m_party.IsPlayer;
+        }
+
+        public bool GetIsBandit()
+        {
+            return m_party.IsBandit;
+        }
+        
+        public PartyStatus GetCurrentStatus()
+        {
+            return m_party.CurrentStatus;
+        }
+
+        public void SetCurrentStatus(PartyStatus newStatus)
+        {
+            m_party.CurrentStatus = newStatus;
         }
 
         public Character GetPartyLeader()
@@ -62,8 +94,10 @@ namespace MBUnity
         {
             m_leader = m_party.Leader;
             m_party.script = this;
+            m_collider = GetComponent<BoxCollider>();
 
             CalculatePartyLimit();
+
 
             if (!m_party.IsBandit)
             {
@@ -76,7 +110,6 @@ namespace MBUnity
             if (m_party.Leader.IsLord)
             {
                 AddSoldiersToLordParty();
-                //TeleportToLocationOwned();
             }
 
             CalculatePartyValue();
@@ -137,16 +170,20 @@ namespace MBUnity
 
         public void EnterLocation(Location location)
         {
-            //gameObject.SetActive(false);
             location.script.AddPartyTroopsToGarrison(m_party);
             m_currentLocation = location;
+            modelObject.SetActive(false);
+            textObject.SetActive(false);
+            m_collider.enabled = false;
         }
 
         public void ExitLocation(Location location)
         {
             location.script.RemovePartyTroopsFromGarrison(m_party);
-            //gameObject.SetActive(true);
             m_currentLocation = null;
+            modelObject.SetActive(true);
+            textObject.SetActive(true);
+            m_collider.enabled = true;
         }
 
         public Location GetCurrentLocation()

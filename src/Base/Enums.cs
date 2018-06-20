@@ -28,6 +28,33 @@ namespace MBUnity
             WeaponPoints,
         }
 
+        public enum PartyStatus
+        {
+            Holding,
+            Travelling,
+            Patrolling
+        }
+        
+        public enum WeaponType
+        {
+            OneHanded,
+            TwoHanded,
+            Polearm,
+            Dagger,
+            Shield,
+            Bow,
+            Crossbow,
+            Bolt
+        }
+
+        public enum ArmorType
+        {
+            Helmet,
+            Chest,
+            Gloves,
+            Boots
+        }
+
         public enum Proficiencies
         {
             OneHandedWeapon,

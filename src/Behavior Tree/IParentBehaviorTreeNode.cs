@@ -7,7 +7,6 @@ namespace CustomBehaviorTree
 {
     public interface IParentBehaviorTreeNode : IBehaviorTreeNode
     {
-        
         void AddChild(IBehaviorTreeNode child);
     }
 }

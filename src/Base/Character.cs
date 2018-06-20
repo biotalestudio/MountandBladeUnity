@@ -7,7 +7,6 @@ namespace MBUnity
     [CreateAssetMenu(fileName = "New Character", menuName = "Game/Character")]
     public class Character : ScriptableObject
     {
-
         [Header("Primary")]
         public string Name;
         public int Level;
@@ -21,10 +20,12 @@ namespace MBUnity
         public int CharValue;
 
         [Header("Game")]
+        public int Gold;
         public bool IsLord;
         public bool IsCompanion;
+        public List<Item> Inventory;
         public List<Location> LocationsOwned;
-
+        
         public bool IsEqual(Character c1)
         {
             return this.Equals(c1);

@@ -29,7 +29,6 @@ public class Deneme : MonoBehaviour
     private void Update()
     {
         tree.Tick(new TimeData(Time.deltaTime));
-        
     }
 
     float m_time = 0f;
@@ -49,7 +48,7 @@ public class Deneme : MonoBehaviour
     BehaviorTreeStatus Action03(TimeData time)
     {
         Debug.Log("Action03");
-        return BehaviorTreeStatus.FAILURE;
+        return BehaviorTreeStatus.RUNNING;
     }
 
     BehaviorTreeStatus Action04(TimeData time)

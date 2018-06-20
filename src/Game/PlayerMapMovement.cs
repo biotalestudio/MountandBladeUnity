@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using MBUnity.Enums;
 
 namespace MBUnity
 {
@@ -30,7 +31,7 @@ namespace MBUnity
         void Start()
         {
             m_yAxis = transform.position.y;
-            PlayerParty.followingParty = null;
+            PlayerParty.FollowingParty = null;
             m_mainCamera = Camera.main;
 
             m_agent = GetComponent<NavMeshAgent>();
@@ -65,23 +66,23 @@ namespace MBUnity
                         m_isMoving = true;
                         if ((PartyUIInteraction.IsOverOnParty == true) && (!PartyUI.partyData.IsPlayer))
                         {
-                            PlayerParty.followingParty = PartyUI.partyData;
-                            PlayerParty.followingLocation = null;
+                            PlayerParty.FollowingParty = PartyUI.partyData;
+                            PlayerParty.FollowingLocation = null;
                             IsMovingTowardsParty = true;
                         }
                         else if (LocationUIInteraction.IsOverOnLocation == true)
                         {
-                            PlayerParty.followingParty = null;
-                            PlayerParty.followingLocation = LocationUI.LocationData;
+                            PlayerParty.FollowingParty = null;
+                            PlayerParty.FollowingLocation = LocationUI.LocationData;
                         }
                         else
                         {
-                            PlayerParty.followingParty = null;
+                            PlayerParty.FollowingParty = null;
                             IsMovingTowardsParty = false;
-                            PlayerParty.followingParty = null;
-                            PlayerParty.followingLocation = null;
+                            PlayerParty.FollowingParty = null;
+                            PlayerParty.FollowingLocation = null;
                         }
-                        PlayerParty.Status = Party.CurrentStatus.TRAVELLING;
+                        PlayerParty.CurrentStatus = PartyStatus.Travelling;
 
                         m_animator.SetBool("isWalking", true);
                     }
@@ -101,14 +102,14 @@ namespace MBUnity
             //And before it sets a destination it comes to this condition and reads remaningDistance as 0
             if (m_hasClicked && (!(m_agent.remainingDistance == 0f) && (m_agent.remainingDistance < 0.1f)))
             {
-                if (PlayerParty.followingParty)
+                if (PlayerParty.FollowingParty)
                 {
                     //Open Dialog Menu with this party's leader
                 }
-                else if (PlayerParty.followingLocation)
+                else if (PlayerParty.FollowingLocation)
                 {
                     //Open Location Menu
-                    GameManager.Instance.SetLocationSceneUIData(PlayerParty.followingLocation);
+                    GameManager.Instance.SetLocationSceneUIData(PlayerParty.FollowingLocation);
                     GameManager.Instance.SetState(GameManager.GameState.PAUSED);
                     GameManager.Instance.ActivateLocationSceneUI();
                 }
@@ -116,9 +117,9 @@ namespace MBUnity
                 m_hasClicked = false;
                 m_isMoving = false;
                 IsMovingTowardsParty = false;
-                PlayerParty.followingParty = null;
-                PlayerParty.followingLocation = null;
-                PlayerParty.Status = Party.CurrentStatus.HOLDING;
+                PlayerParty.FollowingParty = null;
+                PlayerParty.FollowingLocation = null;
+                PlayerParty.CurrentStatus = PartyStatus.Holding;
                 m_animator.SetBool("isWalking", false);
             }
 

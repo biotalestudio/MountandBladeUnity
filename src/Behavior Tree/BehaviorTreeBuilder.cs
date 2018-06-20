@@ -23,12 +23,9 @@ namespace CustomBehaviorTree
             var actionNode = new ActionNode(name, function);
 
             m_parentNodeStack.Peek().AddChild(actionNode);
-
-
+            
             return this;
         }
-
-        //Create a Sequence Node Here
 
         public BehaviorTreeBuilder Sequence(string name)
         {
@@ -57,7 +54,7 @@ namespace CustomBehaviorTree
             return m_currentParentNode;
         }
 
-        //Finishes building a composite node
+        //Finished building a composite node
         //Removes composite node from the top of parentstacklist
         public BehaviorTreeBuilder End()
         {
